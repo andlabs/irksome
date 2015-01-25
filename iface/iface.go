@@ -25,7 +25,12 @@ type Server interface {
 	// You can specify an optional reason.
 	Quit(reason string) Message
 
-	// TODO nickname management
+	// Nick returns the current nickname.
+	// It automatically responds to server-side nickname changes.
+	Nick() string
+
+	// SetNick returns a Message that, when sent to C, sets the current nickname.
+	SetNick(nick string) Message
 }
 
 // Message represents messages.
@@ -45,6 +50,13 @@ type Message interface {
 	// When sending a Message, this should return the destination Channel, or should be nil for the server itself.
 	// Note that private messages count as channels; see Channel for details.
 	Channel() Channel
+
+	// Previous returns the old nickname if the message type is either YourNickChanged or OtherNickChanged.
+	Previous() string
+
+	// Nick returns the new nickname if the message type is either YourNickChanged or OtherNickChanged.
+	// Nick returns the nickname of the person who joined or left if the message type is OtherJoined or OtherLeft.
+	Nick() string
 
 	// The remainder of these only apply to Line messages.
 
@@ -69,6 +81,10 @@ const (
 	Connected
 	Disconnected
 	Joined
+	YourNickChanged
+	OtherNickChanged
+	OtherJoined
+	OtherLeft				// applies to both parts and disconnects (TODO)
 )
 
 // Channel represents a channel.
@@ -76,9 +92,9 @@ type Channel interface {
 	Name() string
 	Server() Server
 
-	// Members returns a list of usernames in the channel.
+	// Members returns a list of nicknames in the channel.
 	// If the returned list has length zero, the Channel object represents a private message.
-	// In that case, Name() returns the username.
+	// In that case, Name() returns the nickname of the person you are talking to.
 	Members() []string
 
 	// Say returns a Message that, when sent to Server().C(), says the line in the channel as a normal line.
