@@ -6,12 +6,13 @@ type Server interface {
 	// C returns a channel of messages.
 	// You may send or receive from this channel.
 	// C shall not change during the lifetime of the Server object.
-	C() chan *Message
+	C() chan Message
 
 	// Connect establishes a connection to the server.
 	// After Connect, C will start processing messages.
 	// C will also send a message when disconnected.
 	// Connection errors will be sent across C.
+	// TODO what if allready connected?
 	Connect()
 
 	// Raw returns a Message that will result in the raw text being sent to the server when sent to C.
@@ -20,6 +21,10 @@ type Server interface {
 	// Join returns a Message that, when sent to C, will result in that channel being joined.
 	// key contains the channel password, if any.
 	Join(channel string, key string) Message
+
+	// Query returns a Message that, when sent to C, will result in the given nickname receiving the given line in a private message.
+	// It is analogous to Join, and if the send succeeded, will return a QueryStarted message containing the Channel to use for future communications.
+	Query(nick string, message string) Message
 
 	// Quit returns a Message that, when sent to C, will result in the connection to the server being closed.
 	// You can specify an optional reason.
@@ -56,6 +61,7 @@ type Message interface {
 
 	// Nick returns the new nickname if the message type is either YourNickChanged or OtherNickChanged.
 	// Nick returns the nickname of the person who joined or left if the message type is OtherJoined or OtherLeft.
+	// Nick returns the nickname of the person in the query session if the message type is QueryStarted.
 	Nick() string
 
 	// The remainder of these only apply to Line messages.
@@ -85,6 +91,7 @@ const (
 	OtherNickChanged
 	OtherJoined
 	OtherLeft				// applies to both parts and disconnects (TODO)
+	QueryStarted
 )
 
 // Channel represents a channel.
