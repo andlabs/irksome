@@ -30,6 +30,8 @@ func doGo(what C.int, arg C.gpointer) {
 	switch what {
 	case C.mQuit:
 		quit <- struct{}{}
+	case C.mTestWindowMade:
+		testWindowMade <- struct{}{}
 	}
 }
 

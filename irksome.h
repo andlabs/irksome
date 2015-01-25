@@ -21,6 +21,10 @@ enum {
 	// no argument
 	mQuit,
 
+	// TODO for testing only
+	mMakeTestWindow,
+	mTestWindowMade,
+
 	// TODO have a sentinel here to prevent invalid messages?
 };
 
