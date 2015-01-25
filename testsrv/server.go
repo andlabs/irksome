@@ -4,6 +4,7 @@ package testsrv
 import (
 	"time"
 	"sync"
+	"strings"
 	"github.com/andlabs/irksome/iface"
 )
 
@@ -28,15 +29,9 @@ func (s *Server) do() {
 	for {
 		select {
 		case <-s.start:
-			s.c <- &message{
-				server:	s,
-				raw:		[]byte("connected"),
-				ty:		iface.Connected,
-				time:		time.Now(),
-			}
+			s.c <- s.newmsg(iface.Connected, nil, "connected")
 		case mm := <-s.c:
 			m := mm.(*message)
-			parts := bytes.Split(m.raw, []byte(" "))
 			switch parts[0] {
 			// commands
 			case []byte("join"):
@@ -45,14 +40,15 @@ func (s *Server) do() {
 				// TODO
 			case []byte("quit"):
 				s.nicklock.Lock()
+				quitraw := []byte{[]byte(s.nick), []byte("quit:")}
+				s.nicklock.Unlock()
+				quitraw = append(quitraw, bytes[1:]...)
 				s.c <- &message{
 					server:	s,
-					// TODO spaces
-					raw:		append([]byte(s.nick + " quit: "), parts[1:]...)
+					raw:		quitraw,
 					ty:		iface.Disconnected,
 					time:		time.Now(),
 				}
-				s.nicklock.Unlock()
 			case []byte("nick"):
 				new := string(parts[1])
 				if new == "illegal" {
@@ -62,12 +58,7 @@ func (s *Server) do() {
 				s.nicklock.Lock()
 				s.nick = new
 				s.nicklock.Unlock()
-				s.c <- &message{
-					server:	s,
-					raw:		[]byte("nick changed successfully"),
-					ty:		iface.YourNickChanged,
-					time:		time.Now(),
-				}
+				s.c <- s.newmsg(iface.YourNickChanged, nil, "nick", "changed", "successfully")
 			// tests
 			}
 		// TODO other cases
@@ -83,25 +74,24 @@ func (s *Server) Connect() {
 	s.start <- true
 }
 
+func (s *Server) raw(msg ...string) iface.Message {
+	return s.newmsg(iface.Line, nil, msg...)
+}
+
 func (s *Server) Raw(msg string) iface.Message {
-	return &message{
-		server:	s,
-		raw:		[]byte(msg),
-		ty:		iface.Line,
-		time:		time.Now(),
-	}
+	return s.raw(strings.Split(msg, " ")...)
 }
 
 func (s *Server) Join(channel string, key string) iface.Message {
-	return s.Raw("join " + channel + " key")
+	return s.raw("join", channel, "key")
 }
 
 func (s *Server) Query(nick string, msg string) iface.Message {
-	return s.Raw("msg " + nick + " " + msg)
+	return s.raw("msg", nick, msg)
 }
 
 func (s *Server) Quit(reason string) iface.Message {
-	return s.Raw("quit " + reason)
+	return s.raw("quit", reason)
 }
 
 func (s *Server) Nick() string {
@@ -111,5 +101,5 @@ func (s *Server) Nick() string {
 }
 
 func (s *Server) SetNick(new string) iface.Message {
-	return s.Raw("nick " + new)
+	return s.raw("nick ", new)
 }
