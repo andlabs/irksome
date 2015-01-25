@@ -21,11 +21,17 @@ enum {
 	// no argument
 	mQuit,
 
-	// TODO for testing only
-	mMakeTestWindow,
-	mTestWindowMade,
+	// sent by Go to UI thread to load the main window
+	// no argument
+	mLoadMainWindow,
+	// sent in return after window has been loaded and shown
+	// no argument
+	mMainWindowLoaded,
 
 	// TODO have a sentinel here to prevent invalid messages?
 };
+
+// mainwin.c
+extern void loadMainWindow(void);
 
 #endif

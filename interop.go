@@ -5,7 +5,6 @@ import (
 	"runtime"
 )
 
-// #cgo pkg-config: gtk+-3.0
 // #include "irksome.h"
 import "C"
 
@@ -30,8 +29,8 @@ func doGo(what C.int, arg C.gpointer) {
 	switch what {
 	case C.mQuit:
 		quit <- struct{}{}
-	case C.mTestWindowMade:
-		testWindowMade <- struct{}{}
+	case C.mMainWindowLoaded:
+		mainWindowLoaded <- struct{}{}
 	}
 }
 
