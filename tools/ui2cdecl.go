@@ -28,7 +28,7 @@ static {{.TypeName}} *make{{.TypeName}}FromUIFile(void)
 {{$typename := .TypeName}}{{range .IDs}}	instance->{{.}} = GTK_WIDGET(gtk_builder_get_object(builder, "{{.}}"));
 	if (instance->{{.}} == NULL)
 		g_error("error getting {{$typename}} widget {{.}} (exact error unspecified)");
-{{end}}	// TODO how to free GtkBuilder properly/at the right time
+{{end}}	g_object_unref(builder);
 	return instance;
 }
 `

@@ -96,6 +96,6 @@ static MainWindow *makeMainWindowFromUIFile(void)
 	instance->secureIcon = GTK_WIDGET(gtk_builder_get_object(builder, "secureIcon"));
 	if (instance->secureIcon == NULL)
 		g_error("error getting MainWindow widget secureIcon (exact error unspecified)");
-	// TODO how to free GtkBuilder properly/at the right time
+	g_object_unref(builder);
 	return instance;
 }
