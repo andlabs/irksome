@@ -59,6 +59,12 @@ func (s *Server) do() {
 				s.nick = new
 				s.nicklock.Unlock()
 				s.c <- s.newmsg(iface.YourNickChanged, nil, "nick", "changed", "successfully")
+			case []byte("say"):
+				// TODO
+			case []byte("do"):
+				// TODO
+			case []byte("part"):
+				// TODO
 			// tests
 			}
 		// TODO other cases
