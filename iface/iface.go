@@ -3,30 +3,36 @@ package iface
 
 // Server describes a server.
 type Server interface {
-	// C returns a channel of messages.
-	// You may send or receive from this channel.
-	// C shall not change during the lifetime of the Server object.
-	C() chan Message
+	// In returns a channel of messages to send to the server.
+	// You may send to this channel.
+	// In shall not change during the lifetime of the Server object.
+	In() chan<- Message
+
+	// Out returns a channel of messages to receive from the server.
+	// You may receive from this channel.
+	// Out shall not change during the lifetime of the Server object.
+	// (TODO rename In and Out?)
+	Out() <-chan Message
 
 	// Connect establishes a connection to the server.
-	// After Connect, C will start processing messages.
-	// C will also send a message when disconnected.
-	// Connection errors will be sent across C.
+	// After Connect, In will start processing messages.
+	// Out will also send a message when disconnected.
+	// Connection errors will be sent across Out.
 	// TODO what if allready connected?
 	Connect()
 
-	// Raw returns a Message that will result in the raw text being sent to the server when sent to C.
+	// Raw returns a Message that will result in the raw text being sent to the server when sent to In.
 	Raw(message string) Message
 
-	// Join returns a Message that, when sent to C, will result in that channel being joined.
+	// Join returns a Message that, when sent to In, will result in that channel being joined.
 	// key contains the channel password, if any.
 	Join(channel string, key string) Message
 
-	// Query returns a Message that, when sent to C, will result in the given nickname receiving the given line in a private message.
+	// Query returns a Message that, when sent to In, will result in the given nickname receiving the given line in a private message.
 	// It is analogous to Join, and if the send succeeded, will return a QueryStarted message containing the Channel to use for future communications.
 	Query(nick string, message string) Message
 
-	// Quit returns a Message that, when sent to C, will result in the connection to the server being closed.
+	// Quit returns a Message that, when sent to In, will result in the connection to the server being closed.
 	// You can specify an optional reason.
 	Quit(reason string) Message
 
@@ -34,7 +40,7 @@ type Server interface {
 	// It automatically responds to server-side nickname changes.
 	Nick() string
 
-	// SetNick returns a Message that, when sent to C, sets the current nickname.
+	// SetNick returns a Message that, when sent to In, sets the current nickname.
 	SetNick(nick string) Message
 }
 
@@ -107,11 +113,11 @@ type Channel interface {
 	// Say returns a Message that, when sent to Server().C(), says the line in the channel as a normal line.
 	Say(what string) Message
 
-	// Do returns a Message that, when sent to Server().C(), says the line in the channel as an action line.
+	// Do returns a Message that, when sent to Server().In(), says the line in the channel as an action line.
 	// For instance, IRC clients typically denote actions with "/me".
 	Do(what string) Message
 
-	// Leave returns a Message that, when sent to Server().C(), leaves the channel.
+	// Leave returns a Message that, when sent to Server().In(), leaves the channel.
 	// An optional reason may be specified.
 	Leave(reason string) Message
 }

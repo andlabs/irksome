@@ -10,7 +10,8 @@ import (
 )
 
 type Server struct {
-	c		chan iface.Message
+	in		chan iface.Message
+	out		chan iface.Message
 	start		chan bool
 	// TODO connection mutex
 	nick		string
@@ -23,7 +24,8 @@ type Server struct {
 
 func New() *Server {
 	s := new(Server)
-	s.c = make(chan iface.Message)
+	s.in = make(chan iface.Message)
+	s.out = make(chan iface.Message)
 	s.start = make(chan bool)
 	s.channels = make(map[string]*channel)
 	s.queries = make(map[string]*channel)
@@ -36,8 +38,8 @@ func (s *Server) do() {
 	for {
 		select {
 		case <-s.start:
-			s.c <- s.newmsg(iface.Connected, nil, "connected")
-		case mm := <-s.c:
+			s.out <- s.newmsg(iface.Connected, nil, "connected")
+		case mm := <-s.in:
 			m := mm.(*message)
 			parts := m.raw
 			switch parts[0] {
@@ -58,7 +60,7 @@ func (s *Server) do() {
 					}
 					s.channels[cn] = c
 				}
-				s.c <- &message{
+				s.out <- &message{
 					server:	s,
 					raw:		[][]byte{[]byte("joined"), parts[1]},
 					ty:		iface.Joined,
@@ -73,7 +75,7 @@ func (s *Server) do() {
 				quitraw := []byte{[]byte(s.nick), []byte("quit:")}
 				s.nicklock.Unlock()
 				quitraw = append(quitraw, bytes[1:]...)
-				s.c <- &message{
+				s.out <- &message{
 					server:	s,
 					raw:		quitraw,
 					ty:		iface.Disconnected,
@@ -88,7 +90,7 @@ func (s *Server) do() {
 				s.nicklock.Lock()
 				s.nick = new
 				s.nicklock.Unlock()
-				s.c <- s.newmsg(iface.YourNickChanged, nil, "nick", "changed", "successfully")
+				s.out <- s.newmsg(iface.YourNickChanged, nil, "nick", "changed", "successfully")
 			case []byte("say"):
 				// TODO
 			case []byte("do"):
@@ -102,8 +104,12 @@ func (s *Server) do() {
 	}
 }
 
-func (s *Server) C() chan iface.Message {
-	return s.c
+func (s *Server) In() chan<- iface.Message {
+	return s.in
+}
+
+func (s *Server) Out() <-chan iface.Message {
+	return s.out
 }
 
 func (s *Server) Connect() {
