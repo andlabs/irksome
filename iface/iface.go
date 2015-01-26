@@ -1,6 +1,8 @@
 // 23 january 2015
 package iface
 
+// TODO really need to fix up the comments
+
 // Server describes a server.
 type Server interface {
 	// In returns a channel of messages to send to the server.
