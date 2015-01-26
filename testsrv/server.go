@@ -2,6 +2,7 @@
 package testsrv
 
 import (
+	"fmt"
 	"time"
 	"sync"
 	"strings"
@@ -14,12 +15,18 @@ type Server struct {
 	// TODO connection mutex
 	nick		string
 	nicklock	sync.Mutex
+	channels	map[string]*channel
+	chanlock	sync.Mutex
+	queries	map[string]*channel
+	qlock	sync.Mutex
 }
 
 func New() *Server {
 	s := new(Server)
 	s.c = make(chan iface.Message)
 	s.start = make(chan bool)
+	s.channels = make(map[string]*channel)
+	s.queries = make(map[string]*channel)
 	go s.do()
 	return s
 }
@@ -32,10 +39,33 @@ func (s *Server) do() {
 			s.c <- s.newmsg(iface.Connected, nil, "connected")
 		case mm := <-s.c:
 			m := mm.(*message)
+			parts := m.raw
 			switch parts[0] {
 			// commands
 			case []byte("join"):
-				// TODO
+				s.chanlock.Lock()
+				cn := string(parts[1])
+				c := s.channels[cn]
+				if c == nil {
+					if cn == "#illegal" {
+						// TODO
+						s.chanlock.Unlock()
+						break
+					}
+					c = &channel{
+						s:		s,
+						name:	cn,
+					}
+					s.channels[cn] = c
+				}
+				s.c <- &message{
+					server:	s,
+					raw:		[][]byte{[]byte("joined"), parts[1]},
+					ty:		iface.Joined,
+					time:		time.Now(),
+					channel:	c,
+				}
+				s.chanlock.Unlock()
 			case []byte("msg"):
 				// TODO
 			case []byte("quit"):
@@ -78,6 +108,16 @@ func (s *Server) C() chan iface.Message {
 
 func (s *Server) Connect() {
 	s.start <- true
+}
+
+func (s *Server) errmsg(c *channel, format string, args ...interface{}) ifac.Message {
+	return &message{
+		server:	s,
+		err:		fmt.Errorf(format, args...),
+		ty:		iface.Error,
+		time:		time.Now(),
+		channel:	c,
+	}
 }
 
 func (s *Server) raw(msg ...string) iface.Message {
