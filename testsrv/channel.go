@@ -19,12 +19,8 @@ func (c *channel) Server() iface.Server {
 	return c.s
 }
 
-func (c *channel) Members() []string {
-	if c.query {
-		return nil
-	}
-	// TODO
-	return []string{"member", "list"}
+func (c *channel) IsQuery() bool {
+	return c.query
 }
 
 func (c *channel) Say(what string) iface.Message {

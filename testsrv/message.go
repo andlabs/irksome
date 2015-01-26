@@ -16,6 +16,7 @@ type message struct {
 	channel	*channel
 	prev		string
 	nick		string
+	initnicks	[]string
 }
 
 func (s *server) newmsg(ty iface.MessageType, c *channel, parts ...string) *message {
@@ -62,6 +63,10 @@ func (m *message) Previous() string {
 
 func (m *message) Nick() string {
 	return m.nick
+}
+
+func (m *message) InitialNicks() []string {
+	return m.initnicks
 }
 
 // TODO formatted and log lines

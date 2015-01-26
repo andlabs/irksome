@@ -66,6 +66,8 @@ func (s *Server) do() {
 					ty:		iface.Joined,
 					time:		time.Now(),
 					channel:	c,
+					// TODO
+					initnicks:	[]string{"nickname", "list"},
 				}
 				s.chanlock.Unlock()
 			case []byte("msg"):

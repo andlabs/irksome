@@ -71,6 +71,10 @@ type Message interface {
 	// Nick returns the nickname of the person in the query session if the message type is QueryStarted.
 	Nick() string
 
+	// If the message type is Joined, InitialNicks returns a list of all nicknames in the channel at join time.
+	// TODO sorted?
+	InitialNicks() []string
+
 	// The remainder of these only apply to Line messages.
 
 	// Formatted returns a Formatted that represents the line with all protocol-specific formatting marks processed.
@@ -106,10 +110,8 @@ type Channel interface {
 	Name() string
 	Server() Server
 
-	// Members returns a list of nicknames in the channel.
-	// If the returned list has length zero, the Channel object represents a private message.
-	// In that case, Name() returns the nickname of the person you are talking to.
-	Members() []string
+	// IsQuery returns true if the Channel represents a query; in that case, Name returns the nickname of the queried user.
+	IsQuery() bool
 
 	// Say returns a Message that, when sent to Server().C(), says the line in the channel as a normal line.
 	Say(what string) Message
