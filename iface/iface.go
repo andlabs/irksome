@@ -12,6 +12,7 @@ type Server interface {
 	// You may receive from this channel.
 	// Out shall not change during the lifetime of the Server object.
 	// (TODO rename In and Out?)
+	// (TODO merge In and Out?)
 	Out() <-chan Message
 
 	// Connect establishes a connection to the server.
