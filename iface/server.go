@@ -4,6 +4,7 @@ package iface
 // TODO settle the overloading of definitions of 'message'
 // TODO really return Messages and not send them immediately?
 // TODO flooding/multiline messages (for slack) (see first TODO)
+// TODO state thread safety of entire package
 
 // Server represents a server.
 type Server interface {
