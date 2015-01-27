@@ -48,5 +48,11 @@ type Server interface {
 	// Formatting styles that are not supported are merely ignored.
 	Format(f Formatted) []byte
 
+	// Away returns a Message that, when sent, marks yourself as away.
+	Away(reason string) Message
+
+	// Back returns a Message that, when sent, marks yourself as no longer away.
+	Back() Message
+
 	// TODO user mode translation
 }
