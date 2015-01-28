@@ -4,6 +4,7 @@ package iface
 // TODO settle the overloading of definitions of 'message'
 // TODO flooding/multiline messages (for slack) (see first TODO)
 // TODO state thread safety of entire package
+// TODO echo back of own lines (IRC doesn't; do other protocols?) needs to be documented (for IRC, server must fake it)
 
 // Server represents a server.
 type Server interface {
