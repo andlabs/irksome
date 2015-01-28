@@ -11,7 +11,7 @@ type Formatted struct {
 // Style contains instructions on how to style text.
 // Each field in Formatted.Styles represents a starting point; a style is applied until the end of the string or a countering Style, whichever comes first.
 // Each instance of Start may only appear once.
-// Each element of Styles must be sorted by increasing value of Start.
+// Each element of Formatted.Styles must be sorted by increasing value of Start.
 type Style struct {
 	Start		int		// in bytes
 	Add		StyleBits	// bits of styles to add
