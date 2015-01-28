@@ -1,0 +1,3 @@
+Personal IRC, Slack, and possibly AIM client, with UI modelled after Konversation and only what I need.
+
+Take special note of the UI design/infrastructure (interop.c/interop.go); if what I'm doing here works, package ui will switch to it.
