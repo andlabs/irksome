@@ -5,7 +5,7 @@ import (
 	"github.com/andlabs/irksome/iface"
 )
 
-type server struct {
+type Server struct {
 	users	map[string]*user
 	you		string
 	chans	map[string]*channel
@@ -13,25 +13,28 @@ type server struct {
 	in		chan []byte
 	out		chan []byte
 
+	initNick	string
+	die		bool
+
 	// for the iface.Server interface
-	// see iface.go for THAT
+	// see frontend.go for THAT
 	c		chan iface.Message
 }
 
-func (s *server) initImpl() {
+func (s *Server) initImpl() {
 	s.users = make(map[string]*user)
 	s.chans = make(map[string]*channel)
 	s.in = make(chan []byte)
 	s.out = make(chan []byte)
+	s.die = false
+	s.users = make(map[string]*user)
+	s.users[s.initNick] = newUser(s.initNick)
+	s.you = s.initNick
 }
 
-func (s *server) setInitialNick(nick string) {
-	s.users[nick] = newUser(nick)
-	s.you = nick
-}
-
-func (s *server) runImpl() {
-	for {
+func (s *Server) runImpl() {
+	s.initImpl()
+	for !s.die {
 		select {
 		case msg := <-s.in:
 			s.handle(msg)
@@ -44,7 +47,7 @@ func (s *server) runImpl() {
 // 	cmd arg :arbitrary text treated as a single argument
 // it may not have initial spaces or more than one space between arguments
 
-func (s *server) handle(msg []byte) {
+func (s *Server) handle(msg []byte) {
 	parts := s.split(msg)
 	if len(parts) == 0 {		// nothing
 		continue
@@ -57,7 +60,7 @@ func (s *server) handle(msg []byte) {
 	}
 }
 
-func (s *server) split(msg []byte) [][]byte {
+func (s *Server) split(msg []byte) [][]byte {
 	parts := make([][]byte, 0, len(msg) / 4)
 	pstart := 0
 	// this may look like a bug, but it's not...
