@@ -41,3 +41,43 @@ func (s *Server) runMessager() {
 		s.c <- m
 	}
 }
+
+func (s *Server) C() <-chan iface.Message {
+	return s.c
+}
+
+// TODO holding on to msg
+func (s *Server) Raw(msg []byte) {
+	s.in <- msg
+}
+
+func (s *Server) Join(channel string, password string) {
+	// TODO
+}
+
+// TODO holding on
+func (s *Server) Query(nick string, msg []byte) {
+	// TODO
+}
+
+// TODO holding on
+func (s *Server) QueryDo(nick string, msg []byte) {
+	// TODO
+}
+
+// TODO holding on
+func (s *Server) Quit(reason []byte) {
+	// TODO
+}
+
+func (s *Server) SetNick(nick string) {
+	// TODO
+}
+
+func (s *Server) Away(reason string) {
+	// TODO
+}
+
+func (s *Server) Back() {
+	// TODO
+}

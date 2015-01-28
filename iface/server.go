@@ -22,6 +22,7 @@ type Server interface {
 
 	// Raw issues the given byte sequence directly to the server.
 	// TODO hostmasks
+	// TODO holding on
 	Raw(sequence []byte)
 
 	// Join asks the server to join a given channel.
@@ -31,13 +32,16 @@ type Server interface {
 	// Query is similar to Join, except that instead of joining a channel, it initiates a private conversation ("query") with a given user.
 	// Because some protocols (IRC, for instance) don't have a special state for "querying someone else", Query() requires a line to send to the user at the same time.
 	// On success, the Message type will be QueryStarted instead of Joined, but the semantics are the same.
+	// TODO holding on
 	Query(nick string, message []byte)
 
 	// QueryDo is similar to Query, except the message is sent as an action; see Channel.Do().
+	// TODO holding on
 	QueryDo(nick string, message []byte)
 
 	// Quit issues a request to be disconnected from the server.
 	// You may specify an optional reason.
+	// TODO holding on
 	Quit(reason []byte)
 
 	// TODO Nick()?
