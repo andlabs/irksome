@@ -1,5 +1,5 @@
 // 28 january 2015
-package main
+package iface
 
 import (
 	"time"
@@ -67,4 +67,6 @@ const (
 	OtherAway
 	Back
 	OtherBack
+	Kicked
+	OtherKicked
 )

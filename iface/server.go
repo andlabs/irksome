@@ -51,6 +51,7 @@ type Server interface {
 	Format(f Formatted) []byte
 
 	// Away marks yourself as away.
+	// TODO use a []byte as usual?
 	Away(reason string)
 
 	// Back marks yourself as no longer away.
