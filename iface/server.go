@@ -42,7 +42,7 @@ type Server interface {
 	// TODO Nick()?
 
 	// SetNick requests that the server change your nickname to the given nick.
-	// If successful, a Message of type YourNickChanged will be sent.
+	// If successful, a Message of type NickChanged will be sent.
 	SetNick(newnick string)
 
 	// Format takes the given Formatted and returns the byte sequence that it is equivalent to in the given protocol.
