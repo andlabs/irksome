@@ -58,6 +58,7 @@ void initColors(void)
 	GError *err = NULL;
 
 	for (i = 0; i < nColors; i++) {
+		// TODO standardize "(no reason specified)" error text
 		if (gdk_rgba_parse(&rgba, colorStrings[i]) == FALSE)
 			g_error("error parsing color %d (no reason specified)", i);
 		colors[i] = rgba;
