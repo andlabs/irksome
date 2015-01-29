@@ -60,3 +60,10 @@ void tellUI(int what, gpointer arg, gboolean free)
 	gm->where = doUI;
 	gdk_threads_add_idle(dotell, gm);
 }
+
+// cgo helpers
+
+char *argToString(gpointer arg)
+{
+	return (char *) arg;
+}

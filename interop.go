@@ -31,6 +31,8 @@ func doGo(what C.int, arg C.gpointer) {
 		quit <- struct{}{}
 	case C.mMainWindowLoaded:
 		mainWindowLoaded <- struct{}{}
+	case C.mSendMessage:
+		sendMessage(C.GoString(C.argToString(arg)))
 	}
 }
 

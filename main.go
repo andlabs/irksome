@@ -23,6 +23,7 @@ func main() {
 	startC()
 	C.tellUI(C.mLoadMainWindow, nil, C.FALSE)
 	<-mainWindowLoaded
+	openServer(sTest, "", 0, false)
 	<-quit
 	println("exiting")
 }

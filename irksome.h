@@ -10,6 +10,7 @@
 extern void goC(void);
 extern void tellGo(int, gpointer, gboolean);
 extern void tellUI(int, gpointer, gboolean);
+extern char *argToString(gpointer);
 
 // ui.c
 extern void goUI(void);
@@ -27,6 +28,10 @@ enum {
 	// sent in return after window has been loaded and shown
 	// no argument
 	mMainWindowLoaded,
+
+	// sent by UI thread to Go to send a message to the current channel
+	// argument is string to send
+	mSendMessage,
 
 	// TODO have a sentinel here to prevent invalid messages?
 };
