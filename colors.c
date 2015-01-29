@@ -3,12 +3,17 @@
 
 // TODO move to a header file
 // TODO normal text, hyperlink, backlog, background, timestamp?
+// TODO tab: application event?
 enum {
 	colorHighlight,
 	colorAction,
 	colorServerCommand,
 	colorChannelCommand,
-	colorSelf,
+	colorYourNick,
+	colorTabDefault,
+	colorTabChannelMessage,
+	colorTabQueryMessage,
+	colorTabHighlight,
 	nColors,
 };
 #define nNickColors 8
@@ -21,7 +26,11 @@ static const char *colorStrings[nColors] = {
 	[colorAction] = "#0000FF",
 	[colorServerCommand] = "#91640A",
 	[colorChannelCommand] = "#960096",
-	[colorSelf] = "#000001",
+	[colorYourNick] = "#000001",
+	[colorTabDefault] = "#000000",		// TODO especially this one
+	[colorTabChannelMessage] = "#008000",
+	[colorTabQueryMessage] = "#800000",
+	[colorTabHighlight] = "#FF0000",
 };
 
 GdkRGBA colors[nColors];
