@@ -6,7 +6,7 @@ import (
 )
 
 type Server struct {
-	users	map[string]*user
+	users	map[string]struct{}
 	you		string
 	chans	map[string]*channel
 
@@ -22,13 +22,13 @@ type Server struct {
 }
 
 func (s *Server) initImpl() {
-	s.users = make(map[string]*user)
+	s.users = make(map[string]struct{})
 	s.chans = make(map[string]*channel)
 	s.in = make(chan []byte)
 	s.out = make(chan []byte)
 	s.die = false
 	s.users = make(map[string]*user)
-	s.users[s.initNick] = newUser(s.initNick)
+	s.users[s.initNick] = struct{}{}
 	s.you = s.initNick
 }
 
