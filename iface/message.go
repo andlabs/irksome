@@ -27,6 +27,7 @@ type Message interface {
 
 	// Reason returns the reason for the message.
 	// The type must be Disconnected, OtherDisconnected, Left, OtherLeft, Away, or OtherAway.
+	// TODO return Formatted?
 	Reason() string
 
 	// Nick returns the nickname of the user who sent the message.
