@@ -7,7 +7,7 @@ import (
 
 type channel struct {
 	name	string
-	server	*server
+	server	*Server
 	isQuery	bool
 }
 

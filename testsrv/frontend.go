@@ -3,6 +3,7 @@ package testsrv
 
 import (
 	"time"
+	"bytes"
 	"errors"
 	"github.com/andlabs/irksome/iface"
 )
@@ -32,13 +33,23 @@ func (s *Server) runMessager() {
 		m.time = time.Now()
 		parts := s.split(msg)
 		cmd := parts[0]
-		args := parts[1:]
-		switch cmd {
-		case []byte("error"):
+//TODO		args := parts[1:]
+		switch {
+		case bytes.Equal(cmd, []byte("error")):
 			m.ty = iface.Error
 			m.err = errors.New(string(parts[1]))
 		}
 		s.c <- m
+	}
+}
+
+func (s *Server) msg(ty iface.MessageType, c *channel, raw []byte) *message {
+	return &message{
+		ty:		ty,
+		server:	s,
+		raw:		raw,
+		time:		time.Now(),
+		channel:	c,
 	}
 }
 

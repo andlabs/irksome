@@ -7,8 +7,8 @@ import (
 )
 
 type message struct {
-	server	*server
 	ty		iface.MessageType
+	server	*Server
 	raw		[]byte
 	time		time.Time
 	channel	*channel
@@ -24,7 +24,7 @@ func (m *message) Type() iface.MessageType {
 }
 
 func (m *message) Server() iface.Server {
-	return m.s
+	return m.server
 }
 
 func (m *message) Raw() []byte {

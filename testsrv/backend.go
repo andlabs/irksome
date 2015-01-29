@@ -27,7 +27,6 @@ func (s *Server) initImpl() {
 	s.in = make(chan []byte)
 	s.out = make(chan []byte)
 	s.die = false
-	s.users = make(map[string]*user)
 	s.users[s.initNick] = struct{}{}
 	s.you = s.initNick
 }
@@ -50,13 +49,13 @@ func (s *Server) runImpl() {
 func (s *Server) handle(msg []byte) {
 	parts := s.split(msg)
 	if len(parts) == 0 {		// nothing
-		continue
+		return
 	}
 	cmd := parts[0]
-	args := parts[1:]
+//TODO	args := parts[1:]
 	switch cmd {
 	default:
-		out <- append([]byte("error :unknown command "), cmd...)
+		s.out <- append([]byte("error :unknown command "), cmd...)
 	}
 }
 

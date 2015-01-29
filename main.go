@@ -1,6 +1,10 @@
 // 25 january 2015
 package main
 
+import (
+	"fmt"
+)
+
 // #cgo pkg-config: gtk+-3.0
 // #include "irksome.h"
 import "C"
@@ -10,6 +14,10 @@ import "C"
 
 var mainWindowLoaded = make(chan struct{})
 var quit = make(chan struct{})
+
+func panicf(format string, args ...interface{}) {
+	panic(fmt.Errorf(format, args...))
+}
 
 func main() {
 	startC()
