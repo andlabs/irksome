@@ -39,4 +39,7 @@ enum {
 // mainwin.c
 extern void loadMainWindow(void);
 
+// colors.c
+extern void initColors(void);
+
 #endif
