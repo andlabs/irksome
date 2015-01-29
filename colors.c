@@ -1,36 +1,26 @@
 // 29 january 2015
 #include "irksome.h"
 
-// TODO move to a header file
-// TODO normal text, hyperlink, backlog, background, timestamp?
-// TODO tab: application event?
-enum {
-	colorHighlight,
-	colorAction,
-	colorServerCommand,
-	colorChannelCommand,
-	colorYourNick,
-	colorTabDefault,
-	colorTabChannelMessage,
-	colorTabQueryMessage,
-	colorTabHighlight,
-	nColors,
-};
-#define nNickColors 8
-#define nFormattedColors 16
-
 // TODO verify these against Konversation's source and configuration defaults
 
 static const char *colorStrings[nColors] = {
+	[colorBackground] = "#FFFFFF",
+	[colorMessage] = "#000000",
 	[colorHighlight] = "#FF0000",
 	[colorAction] = "#0000FF",
 	[colorServerCommand] = "#91640A",
 	[colorChannelCommand] = "#960096",
 	[colorYourNick] = "#000001",
+	[colorTimestamp] = "#709070",
+	[colorHyperlink] = "#0000FF",
+	[colorBacklog] = "#AAAAAA",
+	[colorBackgroundAlt] = "#EDF4F9",
 	[colorTabDefault] = "#000000",		// TODO especially this one
 	[colorTabChannelMessage] = "#008000",
 	[colorTabQueryMessage] = "#800000",
 	[colorTabHighlight] = "#FF0000",
+	[colorTabChannelEvent] = "#008000",
+	[colorTabApplicationEvent] = "#C3C300",
 };
 
 GdkRGBA colors[nColors];
@@ -58,6 +48,7 @@ void initColors(void)
 	GError *err = NULL;
 
 	for (i = 0; i < nColors; i++) {
+		// TODO verify that missing values are NULL and then check for them
 		// TODO standardize "(no reason specified)" error text
 		if (gdk_rgba_parse(&rgba, colorStrings[i]) == FALSE)
 			g_error("error parsing color %d (no reason specified)", i);

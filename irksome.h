@@ -40,6 +40,32 @@ enum {
 extern void loadMainWindow(void);
 
 // colors.c
+// TODO get marker line colors
+enum {
+	colorBackground,
+	colorMessage,
+	colorHighlight,
+	colorAction,
+	colorServerCommand,
+	colorChannelCommand,
+	colorYourNick,
+	colorTimestamp,
+	colorHyperlink,
+	colorBacklog,
+	colorBackgroundAlt,
+	colorTabDefault,
+	colorTabChannelMessage,
+	colorTabQueryMessage,
+	colorTabHighlight,
+	colorTabChannelEvent,
+	colorTabApplicationEvent,
+	nColors,
+};
+#define nNickColors 8
+#define nFormattedColors 16
+extern GdkRGBA colors[nColors];
+extern GdkRGBA nickColors[nNickColors];
+extern GdkRGBA formattedColors[nFormattedColors];
 extern void initColors(void);
 
 #endif
