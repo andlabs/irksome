@@ -25,7 +25,7 @@ func interop() {
 }
 
 //export doGo
-func doGo(what C.int, arg C.gpointer) {
+func doGo(what C.int, arg C.gpointer, intarg C.intmax_t) {
 	switch what {
 	case C.mQuit:
 		quit <- struct{}{}

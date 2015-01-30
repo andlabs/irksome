@@ -5,16 +5,17 @@
 #define __IRKSOME_H__
 
 #include <gtk/gtk.h>
+#include <stdint.h>
 
 // interop.c
 extern void goC(void);
-extern void tellGo(int, gpointer, gboolean);
-extern void tellUI(int, gpointer, gboolean);
+extern void tellGo(int, gpointer, gboolean, intmax_t);
+extern void tellUI(int, gpointer, gboolean, intmax_t);
 extern char *argToString(gpointer);
 
 // ui.c
 extern void goUI(void);
-extern void doUI(int, gpointer);
+extern void doUI(int, gpointer, intmax_t);
 
 // values for the int argument to the tellXxx() and doXxx() functions
 enum {
@@ -23,14 +24,15 @@ enum {
 	mQuit,
 
 	// sent by Go to UI thread to load the main window
-	// no argument
+	// no arguments
 	mLoadMainWindow,
 	// sent in return after window has been loaded and shown
-	// no argument
+	// no arguments
 	mMainWindowLoaded,
 
 	// sent by UI thread to Go to send a message to the current channel
-	// argument is string to send
+	// pointer argument is string to send
+	// no int argument
 	mSendMessage,
 
 	// TODO have a sentinel here to prevent invalid messages?

@@ -5,7 +5,7 @@ static gpointer uithread(gpointer data)
 {
 	gtk_init(NULL, NULL);
 	gtk_main();
-	tellGo(mQuit, NULL, FALSE);
+	tellGo(mQuit, NULL, FALSE, 0);
 	// TODO what to return?
 }
 
@@ -14,7 +14,7 @@ void goUI(void)
 	g_thread_new("ui", uithread, NULL);
 }
 
-void doUI(int what, gpointer arg)
+void doUI(int what, gpointer arg, intmax_t intarg)
 {
 	switch (what) {
 	case mLoadMainWindow:
