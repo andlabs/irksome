@@ -3,8 +3,10 @@
 
 // TODO verify these against Konversation's source and configuration defaults
 
+#define colorBackgroundString "#FFFFFF"
+
 static const char *colorStrings[nColors] = {
-	[colorBackground] = "#FFFFFF",
+	[colorBackground] = colorBackgroundString,
 	[colorMessage] = "#000000",
 	[colorHighlight] = "#FF0000",
 	[colorAction] = "#0000FF",
@@ -64,4 +66,22 @@ void initColors(void)
 			g_error("error parsing formatted color %d (no reason specified)", i);
 		formattedColors[i] = rgba;
 	}
+}
+
+static const char *chatBackgroundCSS =
+	"GtkTextView {\n"
+	"	background-color: " colorBackgroundString ";\n"
+	"}\n";
+
+void applyChatBackgroundColor(GtkWidget *chat)
+{
+	GtkStyleContext *context;
+	GtkCssProvider *provider;
+	GError *err = NULL;
+
+	context = gtk_widget_get_style_context(chat);
+	provider = gtk_css_provider_new();
+	if (gtk_css_provider_load_from_data(provider, chatBackgroundCSS, -1, &err) == FALSE)
+		g_error("error loading chat area background CSS: %s", err->message);
+	gtk_style_context_add_provider(context, GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
 }

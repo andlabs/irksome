@@ -67,5 +67,6 @@ extern GdkRGBA colors[nColors];
 extern GdkRGBA nickColors[nNickColors];
 extern GdkRGBA formattedColors[nFormattedColors];
 extern void initColors(void);
+extern void applyChatBackgroundColor(GtkWidget *);
 
 #endif
