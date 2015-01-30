@@ -12,6 +12,7 @@ void goC(void)
 	interopContext = g_main_context_new();
 	interopMainLoop = g_main_loop_new(interopContext, TRUE);
 	initColors();
+	initTextTags();
 	goUI();
 	signalCReady();
 	g_main_loop_run(interopMainLoop);

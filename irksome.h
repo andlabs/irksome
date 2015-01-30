@@ -69,4 +69,17 @@ extern GdkRGBA formattedColors[nFormattedColors];
 extern void initColors(void);
 extern void applyChatBackgroundColor(GtkWidget *);
 
+// texttags.c
+extern GtkTextTag *tagNormal;
+extern GtkTextTag *tagBold;
+extern GtkTextTag *tagItalic;
+extern GtkTextTag *tagUnderline;
+extern GtkTextTag *tagStrikethrough;
+extern GtkTextTag *tagMonospace;
+extern GtkTextTag *tagReverse;
+extern GtkTextTag *tagFGColors[nFormattedColors];
+extern GtkTextTag *tagBGColors[nFormattedColors];
+extern GtkTextTagTable *tagtable;
+extern void initTextTags(void);
+
 #endif
