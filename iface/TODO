@@ -1,0 +1,1 @@
+see if we could possibly remove the separation between a Server and a Channel (or change Server to Conn)

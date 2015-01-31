@@ -1,9 +1,7 @@
 // 30 january 2015
 #include "irksome.h"
 
-// TODO rename to channels
-
-GtkTreeStore *connections;
+GtkTreeStore *channels;
 
 enum {
 	colName,
@@ -45,18 +43,18 @@ static gboolean findIterForGoID(gint64 goID, GtkTreeIter *iter)
 	args.iter = iter;
 	args.find = goID;
 	args.found = FALSE;
-	gtk_tree_model_foreach(GTK_TREE_MODEL(connections), findIterForeach, &args);
+	gtk_tree_model_foreach(GTK_TREE_MODEL(channels), findIterForeach, &args);
 	return args.found;
 }
 
-void initConnections(void)
+void initChannels(void)
 {
 	coltypes[colName] = G_TYPE_STRING;
 	coltypes[colColor] = GDK_TYPE_RGBA;
 	coltypes[colBuffer] = GTK_TYPE_TEXT_BUFFER;
 	// TODO scrolling
 	coltypes[colGoID] = G_TYPE_INT64;
-	connections = gtk_tree_store_newv(nColumns, coltypes);
+	channels = gtk_tree_store_newv(nColumns, coltypes);
 }
 
 void setupChannelList(GtkTreeView *chanlist)
@@ -64,7 +62,7 @@ void setupChannelList(GtkTreeView *chanlist)
 	GtkCellRenderer *r;
 	GtkTreeViewColumn *col;
 
-	gtk_tree_view_set_model(chanlist, GTK_TREE_MODEL(connections));
+	gtk_tree_view_set_model(chanlist, GTK_TREE_MODEL(channels));
 	r = gtk_cell_renderer_text_new();
 	col = gtk_tree_view_column_new_with_attributes(NULL, r,
 		"text", colName,
@@ -75,7 +73,7 @@ void setupChannelList(GtkTreeView *chanlist)
 	// TODO connect signals
 }
 
-void addConnection(char *name, gint64 goID, gint64 parentID)
+void addChannel(char *name, gint64 goID, gint64 parentID)
 {
 	GtkTreeIter iter;
 	GtkTreeIter parent;
@@ -83,21 +81,21 @@ void addConnection(char *name, gint64 goID, gint64 parentID)
 
 	// TODO see if goID already exists?
 	if (parentID == -1)
-		gtk_tree_store_append(connections, &iter, NULL);
+		gtk_tree_store_append(channels, &iter, NULL);
 	else {
 		if (!findIterForGoID(parentID, &parent))
 			g_error("attempt to add channel list row %s under nonexistent parent ID %" G_GINT64_FORMAT, name, parentID);
-		gtk_tree_store_append(connections, &iter, &parent);
+		gtk_tree_store_append(channels, &iter, &parent);
 	}
 
 	// the instance here has a refcount of 1
 	// every time we swap out text buffers in the GtkTextView, it will add/remove its own reference, so we're good
 	buf = gtk_text_buffer_new(tagtable);
 
-	gtk_tree_store_set(connections, &iter,
+	gtk_tree_store_set(channels, &iter,
 		colName, name,
 		colBuffer, buf,
 		colGoID, goID,
 		-1);
-//TODO	tellGo(mConnectionAdded, NULL, FALSE, 0, 0);
+//TODO	tellGo(mChannelAdded, NULL, FALSE, 0, 0);
 }
