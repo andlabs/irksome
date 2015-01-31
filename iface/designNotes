@@ -1,0 +1,11 @@
+Sending raw messages to a server/the server window itself needs to exist in a Channel as well. Any other deisgn just makes things complicated. But how do we
+	- implement the various channel-specific methods for these server Channels?
+	- design a Conn for the actual server itself?
+Or in other words
+	- how would Server.Raw(), Server.SetNick(), etc. be done?
+
+Disconnections and channel parts need to be taken more seriously/with more care.
+	- What should happen if a Channel or Conn becomes invalid? How do we coordinate this across goroutines?
+
+A bigger question: should we keep having a Conn-specific C() or a Channel-specific one? This question affects the others AND the frontend design.
+	- I like the design of funneling all server messages to a single goroutine that then sends it out to the UI thread; it avoids issues involving locking... but then we would need to watch for when Channels and Conns go invald
