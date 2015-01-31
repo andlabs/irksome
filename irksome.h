@@ -5,7 +5,6 @@
 #define __IRKSOME_H__
 
 #include <gtk/gtk.h>
-#include <stdint.h>
 
 // interop.c
 extern void goC(void);
