@@ -90,5 +90,5 @@ void addConnection(char *name, gint64 goID, gint64 parentID)
 		colName, name,
 		colGoID, goID,
 		-1);
-//TODO	tellGo(mConnectionAdded, NULL, FALSE, 0);
+//TODO	tellGo(mConnectionAdded, NULL, FALSE, 0, 0);
 }

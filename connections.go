@@ -16,16 +16,28 @@ type conn struct {
 
 var conns = make([]*conn, 0, 50)
 
-var newChannel = make(chan *conn)
-var chanelCreated = make(chan struct{})
+var addChannel = make(chan *conn)
+var channelAdded = make(chan C.gint64)
+
+var parentServers = make(map[iface.Server]C.gint64)
 
 func connections() {
 	for {
 		select {
-		case cc := <-newConnChan:
+		case cc := <-addChannel:
 			conns = append(conns, cc)
-//TODO			C.tellUI(C.mCreateChannel, strToArg(cc.name), C.TRUE, C.gint64(len(conns) - 1)
-			<-channelCreated
+			n := C.gint64(len(conns) - 1)
+			parent := C.gint64(-1)
+			if conns[n].channel != nil {
+				parent = parentServers[conns[n].server]
+			}
+//TODO			C.tellUI(C.mAddChannel, strToArg(cc.name), C.TRUE, n, parent)
+			if conns[n].channel == nil {
+				parentServers[conns[n].server] = <-channelAdded
+			} else {
+				<-channelAdded
+			}
+			// TODO start monitoring
 		}
 	}
 }

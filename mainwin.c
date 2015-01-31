@@ -13,7 +13,7 @@ static void enterLine(GtkEntry *entry, gpointer data)
 	const char *text;
 
 	text = gtk_entry_get_text(entry);
-	tellGo(mSendMessage, g_strdup(text), TRUE, 0);
+	tellGo(mSendMessage, g_strdup(text), TRUE, 0, 0);
 	gtk_entry_set_text(entry, "");
 }
 
@@ -79,5 +79,5 @@ void loadMainWindow(void)
 	// chat window stuff
 	applyChatBackgroundColor(mainwin->chat);
 
-	tellGo(mMainWindowLoaded, NULL, FALSE, 0);
+	tellGo(mMainWindowLoaded, NULL, FALSE, 0, 0);
 }

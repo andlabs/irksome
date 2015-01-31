@@ -22,7 +22,7 @@ func panicf(format string, args ...interface{}) {
 
 func main() {
 	startC()
-	C.tellUI(C.mLoadMainWindow, nil, C.FALSE, 0)
+	C.tellUI(C.mLoadMainWindow, nil, C.FALSE, 0, 0)
 	<-mainWindowLoaded
 	openServer(sTest, "", 0, false)
 	<-quit

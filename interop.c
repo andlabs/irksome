@@ -24,7 +24,8 @@ struct goMessage {
 	int what;
 	gpointer arg;
 	gboolean free;
-	intmax_t intarg;
+	gint64 intarg;
+	gint64 intarg2;
 	void (*where)(int, gpointer);
 };
 
@@ -39,7 +40,7 @@ static gboolean dotell(gpointer data)
 	return FALSE;		// do not repeat
 }
 
-void tellGo(int what, gpointer arg, gboolean free, intmax_t intarg)
+void tellGo(int what, gpointer arg, gboolean free, gint64 intarg, gint64 intarg2)
 {
 	goMessage *gm;
 
@@ -48,12 +49,13 @@ void tellGo(int what, gpointer arg, gboolean free, intmax_t intarg)
 	gm->arg = arg;
 	gm->free = free;
 	gm->intarg = intarg;
+	gm->intarg2 = intarg2;
 	gm->where = doGo;
 	// TODO evaluate blockingness of the above
 	g_main_context_invoke(interopContext, dotell, gm);
 }
 
-void tellUI(int what, gpointer arg, gboolean free, intmax_t intarg)
+void tellUI(int what, gpointer arg, gboolean free, gint64 intarg, gint64 intarg2)
 {
 	goMessage *gm;
 
@@ -62,6 +64,7 @@ void tellUI(int what, gpointer arg, gboolean free, intmax_t intarg)
 	gm->arg = arg;
 	gm->free = free;
 	gm->intarg = intarg;
+	gm->intarg2 = intarg2;
 	gm->where = doUI;
 	gdk_threads_add_idle(dotell, gm);
 }

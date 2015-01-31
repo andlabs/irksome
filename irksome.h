@@ -9,13 +9,13 @@
 
 // interop.c
 extern void goC(void);
-extern void tellGo(int, gpointer, gboolean, intmax_t);
-extern void tellUI(int, gpointer, gboolean, intmax_t);
+extern void tellGo(int, gpointer, gboolean, gint64, gint64);
+extern void tellUI(int, gpointer, gboolean, gint64, gint64);
 extern char *argToString(gpointer);
 
 // ui.c
 extern void goUI(void);
-extern void doUI(int, gpointer, intmax_t);
+extern void doUI(int, gpointer, gint64, gint64);
 
 // values for the int argument to the tellXxx() and doXxx() functions
 enum {
