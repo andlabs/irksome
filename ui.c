@@ -20,5 +20,8 @@ void doUI(int what, gpointer arg, intmax_t intarg)
 	case mLoadMainWindow:
 		loadMainWindow();
 		break;
+	case mCreateTextBuffer:
+		createTextBuffer();
+		break;
 	}
 }

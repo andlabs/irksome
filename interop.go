@@ -33,6 +33,8 @@ func doGo(what C.int, arg C.gpointer, intarg C.intmax_t) {
 		mainWindowLoaded <- struct{}{}
 	case C.mSendMessage:
 		sendMessage(C.GoString(C.argToString(arg)))
+	case C.mTextBufferCreated:
+		newTextBuffer <- intarg
 	}
 }
 

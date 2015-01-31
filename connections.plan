@@ -1,0 +1,30 @@
+here's what the Go side needs to know for each row of the channel list:
+
+- the iface.Server and iface.Channel
+- the text buffer IDs for the row
+- when a row has been moved around
+	- perhaps have the text buffer ID attached to the row
+	- new rules needed about iface.Channel object lifetimes?
+		- what if the tab is closed though?
+	- or create a Channel for the Server itself?...
+- mapping between GtkTreePath and iface.Server/iface.Channel
+	- especially after rows have been moved around
+	- and vice versa, for the case of changing the color
+- mapping between iface.Server/iface.Channel and text buffer ID
+	- alternatively, between GtkTreePath and text buffer ID
+
+possible solution:
+
+have the channel list itself be the arbiter
+
+	GtkListStore {
+		chanName	string
+		color		color
+		textBuffer		textBuffer
+		scrollpos		whatever
+		goID			int		(ID of iface.Server/iface.Channel pair)
+	}
+
+With this setup the only Go->C case would be setting something to a given GtkListStore row by the goID field... and that's going to be O(n).
+
+We can disregard the speed (for now) as long as we can guarantee iters stay valid during the Go->C updating.
