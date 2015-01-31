@@ -6,6 +6,7 @@ struct MainWindow {
 	GtkWidget *paned1;
 	GtkWidget *chanlistScroller;
 	GtkWidget *chanlist;
+	GtkTreeSelection *treeview-selection1;
 	GtkWidget *box2;
 	GtkWidget *topicLabel;
 	GtkWidget *paned2;
@@ -13,6 +14,7 @@ struct MainWindow {
 	GtkWidget *chat;
 	GtkWidget *nicklistScroller;
 	GtkWidget *nicklist;
+	GtkTreeSelection *treeview-selection2;
 	GtkWidget *box3;
 	GtkWidget *mynick;
 	GtkWidget *awayLabel;
@@ -35,67 +37,73 @@ static MainWindow *makeMainWindowFromUIFile(void)
 		g_error("error loading /irksome/mainwin.ui: %s", err->message);
 	instance->win = GTK_WIDGET(gtk_builder_get_object(builder, "win"));
 	if (instance->win == NULL)
-		g_error("error getting MainWindow widget win (exact error unspecified)");
+		g_error("error getting MainWindow member win (exact error unspecified)");
 	instance->box1 = GTK_WIDGET(gtk_builder_get_object(builder, "box1"));
 	if (instance->box1 == NULL)
-		g_error("error getting MainWindow widget box1 (exact error unspecified)");
+		g_error("error getting MainWindow member box1 (exact error unspecified)");
 	instance->paned1 = GTK_WIDGET(gtk_builder_get_object(builder, "paned1"));
 	if (instance->paned1 == NULL)
-		g_error("error getting MainWindow widget paned1 (exact error unspecified)");
+		g_error("error getting MainWindow member paned1 (exact error unspecified)");
 	instance->chanlistScroller = GTK_WIDGET(gtk_builder_get_object(builder, "chanlistScroller"));
 	if (instance->chanlistScroller == NULL)
-		g_error("error getting MainWindow widget chanlistScroller (exact error unspecified)");
+		g_error("error getting MainWindow member chanlistScroller (exact error unspecified)");
 	instance->chanlist = GTK_WIDGET(gtk_builder_get_object(builder, "chanlist"));
 	if (instance->chanlist == NULL)
-		g_error("error getting MainWindow widget chanlist (exact error unspecified)");
+		g_error("error getting MainWindow member chanlist (exact error unspecified)");
+	instance->treeview-selection1 = GTK_TREE_SELECTION(gtk_builder_get_object(builder, "treeview-selection1"));
+	if (instance->treeview-selection1 == NULL)
+		g_error("error getting MainWindow member treeview-selection1 (exact error unspecified)");
 	instance->box2 = GTK_WIDGET(gtk_builder_get_object(builder, "box2"));
 	if (instance->box2 == NULL)
-		g_error("error getting MainWindow widget box2 (exact error unspecified)");
+		g_error("error getting MainWindow member box2 (exact error unspecified)");
 	instance->topicLabel = GTK_WIDGET(gtk_builder_get_object(builder, "topicLabel"));
 	if (instance->topicLabel == NULL)
-		g_error("error getting MainWindow widget topicLabel (exact error unspecified)");
+		g_error("error getting MainWindow member topicLabel (exact error unspecified)");
 	instance->paned2 = GTK_WIDGET(gtk_builder_get_object(builder, "paned2"));
 	if (instance->paned2 == NULL)
-		g_error("error getting MainWindow widget paned2 (exact error unspecified)");
+		g_error("error getting MainWindow member paned2 (exact error unspecified)");
 	instance->chatScroller = GTK_WIDGET(gtk_builder_get_object(builder, "chatScroller"));
 	if (instance->chatScroller == NULL)
-		g_error("error getting MainWindow widget chatScroller (exact error unspecified)");
+		g_error("error getting MainWindow member chatScroller (exact error unspecified)");
 	instance->chat = GTK_WIDGET(gtk_builder_get_object(builder, "chat"));
 	if (instance->chat == NULL)
-		g_error("error getting MainWindow widget chat (exact error unspecified)");
+		g_error("error getting MainWindow member chat (exact error unspecified)");
 	instance->nicklistScroller = GTK_WIDGET(gtk_builder_get_object(builder, "nicklistScroller"));
 	if (instance->nicklistScroller == NULL)
-		g_error("error getting MainWindow widget nicklistScroller (exact error unspecified)");
+		g_error("error getting MainWindow member nicklistScroller (exact error unspecified)");
 	instance->nicklist = GTK_WIDGET(gtk_builder_get_object(builder, "nicklist"));
 	if (instance->nicklist == NULL)
-		g_error("error getting MainWindow widget nicklist (exact error unspecified)");
+		g_error("error getting MainWindow member nicklist (exact error unspecified)");
+	instance->treeview-selection2 = GTK_TREE_SELECTION(gtk_builder_get_object(builder, "treeview-selection2"));
+	if (instance->treeview-selection2 == NULL)
+		g_error("error getting MainWindow member treeview-selection2 (exact error unspecified)");
 	instance->box3 = GTK_WIDGET(gtk_builder_get_object(builder, "box3"));
 	if (instance->box3 == NULL)
-		g_error("error getting MainWindow widget box3 (exact error unspecified)");
+		g_error("error getting MainWindow member box3 (exact error unspecified)");
 	instance->mynick = GTK_WIDGET(gtk_builder_get_object(builder, "mynick"));
 	if (instance->mynick == NULL)
-		g_error("error getting MainWindow widget mynick (exact error unspecified)");
+		g_error("error getting MainWindow member mynick (exact error unspecified)");
 	instance->awayLabel = GTK_WIDGET(gtk_builder_get_object(builder, "awayLabel"));
 	if (instance->awayLabel == NULL)
-		g_error("error getting MainWindow widget awayLabel (exact error unspecified)");
+		g_error("error getting MainWindow member awayLabel (exact error unspecified)");
 	instance->line = GTK_WIDGET(gtk_builder_get_object(builder, "line"));
 	if (instance->line == NULL)
-		g_error("error getting MainWindow widget line (exact error unspecified)");
+		g_error("error getting MainWindow member line (exact error unspecified)");
 	instance->box4 = GTK_WIDGET(gtk_builder_get_object(builder, "box4"));
 	if (instance->box4 == NULL)
-		g_error("error getting MainWindow widget box4 (exact error unspecified)");
+		g_error("error getting MainWindow member box4 (exact error unspecified)");
 	instance->box5 = GTK_WIDGET(gtk_builder_get_object(builder, "box5"));
 	if (instance->box5 == NULL)
-		g_error("error getting MainWindow widget box5 (exact error unspecified)");
+		g_error("error getting MainWindow member box5 (exact error unspecified)");
 	instance->statusLabel = GTK_WIDGET(gtk_builder_get_object(builder, "statusLabel"));
 	if (instance->statusLabel == NULL)
-		g_error("error getting MainWindow widget statusLabel (exact error unspecified)");
+		g_error("error getting MainWindow member statusLabel (exact error unspecified)");
 	instance->infoLabel = GTK_WIDGET(gtk_builder_get_object(builder, "infoLabel"));
 	if (instance->infoLabel == NULL)
-		g_error("error getting MainWindow widget infoLabel (exact error unspecified)");
+		g_error("error getting MainWindow member infoLabel (exact error unspecified)");
 	instance->secureIcon = GTK_WIDGET(gtk_builder_get_object(builder, "secureIcon"));
 	if (instance->secureIcon == NULL)
-		g_error("error getting MainWindow widget secureIcon (exact error unspecified)");
+		g_error("error getting MainWindow member secureIcon (exact error unspecified)");
 	g_object_unref(builder);
 	return instance;
 }
