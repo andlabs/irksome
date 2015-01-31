@@ -40,3 +40,9 @@ func doGo(what C.int, arg C.gpointer, intarg C.gint64, intarg2 C.gint64) {
 func signalCReady() {
 	waitCReady <- struct{}{}
 }
+
+func strToArg(s string) C.gpointer {
+	cs := C.CString(s)
+	// cs is freed by the next call
+	return C.goStrToArg(cs)
+}

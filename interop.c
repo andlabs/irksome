@@ -75,3 +75,13 @@ char *argToString(gpointer arg)
 {
 	return (char *) arg;
 }
+
+// TODO see if g_free() is compatible with free()
+gpointer goStrToArg(char *gostr)
+{
+	char *gallocdup;
+
+	gallocdup = g_strdup(gostr);
+	free(gostr);
+	return (gpointer) gallocdup;
+}

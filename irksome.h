@@ -5,12 +5,14 @@
 #define __IRKSOME_H__
 
 #include <gtk/gtk.h>
+#include <stdlib.h>
 
 // interop.c
 extern void goC(void);
 extern void tellGo(int, gpointer, gboolean, gint64, gint64);
 extern void tellUI(int, gpointer, gboolean, gint64, gint64);
 extern char *argToString(gpointer);
+extern gpointer goStrToArg(char *);
 
 // ui.c
 extern void goUI(void);
