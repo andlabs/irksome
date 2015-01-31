@@ -34,14 +34,6 @@ enum {
 	// no int argument
 	mSendMessage,
 
-	// sent by Go to UI thread when a new text buffer needs to be created
-	// no arguments
-	mCreateTextBuffer,
-	// sent in return after text buffer has been made
-	// no pointer argument
-	// int argument is index of text buffer
-	mTextBufferCreated,
-
 	// TODO have a sentinel here to prevent invalid messages?
 };
 
@@ -90,8 +82,5 @@ extern GtkTextTag *tagFGColors[nFormattedColors];
 extern GtkTextTag *tagBGColors[nFormattedColors];
 extern GtkTextTagTable *tagtable;
 extern void initTextTags(void);
-
-// textbuffers.c
-extern void createTextBuffer(void);
 
 #endif

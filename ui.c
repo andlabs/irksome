@@ -20,8 +20,5 @@ void doUI(int what, gpointer arg, gint64 intarg, gint64 intarg2)
 	case mLoadMainWindow:
 		loadMainWindow();
 		break;
-	case mCreateTextBuffer:
-		createTextBuffer();
-		break;
 	}
 }

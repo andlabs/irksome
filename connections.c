@@ -79,6 +79,7 @@ void addConnection(char *name, gint64 goID, gint64 parentID)
 {
 	GtkTreeIter iter;
 	GtkTreeIter parent;
+	GtkTextBuffer *buf;
 
 	// TODO see if goID already exists?
 	if (parentID == -1)
@@ -88,8 +89,14 @@ void addConnection(char *name, gint64 goID, gint64 parentID)
 			g_error("attempt to add channel list row %s under nonexistent parent ID %" G_GINT64_FORMAT, name, parentID);
 		gtk_tree_store_append(connections, &iter, &parent);
 	}
+
+	// the instance here has a refcount of 1
+	// every time we swap out text buffers in the GtkTextView, it will add/remove its own reference, so we're good
+	buf = gtk_text_buffer_new(tagtable);
+
 	gtk_tree_store_set(connections, &iter,
 		colName, name,
+		colBuffer, buf,
 		colGoID, goID,
 		-1);
 //TODO	tellGo(mConnectionAdded, NULL, FALSE, 0, 0);
