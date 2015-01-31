@@ -1,6 +1,8 @@
 // 30 january 2015
 #include "irksome.h"
 
+// TODO rename to channels
+
 GtkTreeStore *connections;
 
 enum {
