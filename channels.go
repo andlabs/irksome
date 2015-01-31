@@ -17,7 +17,7 @@ type channel struct {
 var chans = make([]*channel, 0, 50)
 
 var addChannel = make(chan *channel)
-var channelAdded = make(chan C.gint64)
+var channelAdded = make(chan struct{})
 
 var parentServers = make(map[iface.Server]C.gint64)
 
@@ -30,13 +30,11 @@ func doChannels() {
 			parent := C.gint64(-1)
 			if chans[n].channel != nil {
 				parent = parentServers[chans[n].server]
-			}
-_=parent//TODO			C.tellUI(C.mAddChannel, strToArg(cc.name), C.TRUE, n, parent)
-			if chans[n].channel == nil {
-				parentServers[chans[n].server] = <-channelAdded
 			} else {
-				<-channelAdded
+				parentServers[chans[n].server] = n
 			}
+			C.tellUI(C.mAddChannel, strToArg(cc.name), C.TRUE, n, parent)
+			<-channelAdded
 			// TODO start monitoring
 		}
 	}

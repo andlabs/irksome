@@ -4,7 +4,6 @@
 #include "zmainwinui.h"
 
 static MainWindow *mainwin;
-static GtkTreeStore *chanlist;
 
 // TODO implement memory
 // TODO make the strdup unnecessary
@@ -27,8 +26,10 @@ static void switchChannel(GtkTreeView *chanlistwidget, GtkTreePath *path, GtkTre
 	// TODO what if nothing is selected?
 
 	// mark the tab as viewed
+/*TODO
 	gtk_tree_model_get_iter(GTK_TREE_MODEL(chanlist), &iter, path);
 	gtk_tree_store_set(chanlist, &iter, 1, &(colors[colorTabDefault]), -1);
+*/
 
 	// TODO implement the rest
 }
@@ -49,30 +50,8 @@ void loadMainWindow(void)
 
 	// channel list and signals
 	// TODO require a channel selected?
-	chanlist = gtk_tree_store_new(2, G_TYPE_STRING, GDK_TYPE_RGBA);
-	gtk_tree_view_set_model(GTK_TREE_VIEW(mainwin->chanlist), GTK_TREE_MODEL(chanlist));
-	col = gtk_tree_view_column_new_with_attributes(NULL,
-		gtk_cell_renderer_text_new(),
-		"text", 0,
-		"foreground-rgba", 1,
-		NULL);
-	gtk_tree_view_append_column(GTK_TREE_VIEW(mainwin->chanlist), col);
+	setupChannelList(GTK_TREE_VIEW(mainwin->chanlist));
 	g_signal_connect(mainwin->chanlist, "row-activated", G_CALLBACK(switchChannel), NULL);
-	{	// TODO
-		GtkTreeIter first, second;
-		GtkTreeIter iter;
-
-		gtk_tree_store_insert(chanlist, &first, NULL, 0);
-		gtk_tree_store_set(chanlist, &first, 0, "first", 1, &colors[colorTabDefault], -1);
-		gtk_tree_store_insert(chanlist, &iter, &first, 0);
-		gtk_tree_store_set(chanlist, &iter, 0, "#channel", 1, &colors[colorTabChannelMessage], -1);
-		gtk_tree_store_insert(chanlist, &iter, &first, 1);
-		gtk_tree_store_set(chanlist, &iter, 0, "#chan2", 1, &colors[colorTabQueryMessage], -1);
-		gtk_tree_store_insert(chanlist, &iter, &first, 2);
-		gtk_tree_store_set(chanlist, &iter, 0, "username", 1, &colors[colorTabHighlight], -1);
-		gtk_tree_store_insert(chanlist, &second, NULL, 1);
-		gtk_tree_store_set(chanlist, &second, 0, "second", 1, &colors[colorTabApplicationEvent], -1);
-	}
 	// TODO make this automatic
 	gtk_tree_view_expand_all(GTK_TREE_VIEW(mainwin->chanlist));
 

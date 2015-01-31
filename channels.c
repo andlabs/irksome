@@ -97,5 +97,5 @@ void addChannel(char *name, gint64 goID, gint64 parentID)
 		colBuffer, buf,
 		colGoID, goID,
 		-1);
-//TODO	tellGo(mChannelAdded, NULL, FALSE, 0, 0);
+	tellGo(mChannelAdded, NULL, FALSE, 0, 0);
 }

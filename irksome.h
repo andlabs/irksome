@@ -21,7 +21,7 @@ extern void doUI(int, gpointer, gint64, gint64);
 // values for the int argument to the tellXxx() and doXxx() functions
 enum {
 	// sent by UI thread to Go to indicate that the UI thread has finished running and that the program should be exited
-	// no argument
+	// no arguments
 	mQuit,
 
 	// sent by Go to UI thread to load the main window
@@ -33,8 +33,18 @@ enum {
 
 	// sent by UI thread to Go to send a message to the current channel
 	// pointer argument is string to send
-	// no int argument
+	// first int argument is Go ID of channel to send to
+	// no second int argument
 	mSendMessage,
+
+	// sent by Go to UI thread to signal to add a channel
+	// pointer argument is string to send
+	// first int argument is Go ID of this new channel
+	// second int argument is Go ID of parent server, or -1 if it is a server
+	mAddChannel,
+	// sent in return when complete
+	// no arguments
+	mChannelAdded,
 
 	// TODO have a sentinel here to prevent invalid messages?
 };
@@ -84,5 +94,12 @@ extern GtkTextTag *tagFGColors[nFormattedColors];
 extern GtkTextTag *tagBGColors[nFormattedColors];
 extern GtkTextTagTable *tagtable;
 extern void initTextTags(void);
+
+// channels.c
+// TODO should this be exported?
+extern GtkTreeStore *channels;
+extern void initChannels(void);
+extern void setupChannelList(GtkTreeView *);
+extern void addChannel(char *, gint64, gint64);
 
 #endif
