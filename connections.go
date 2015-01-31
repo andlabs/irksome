@@ -31,7 +31,7 @@ func connections() {
 			if conns[n].channel != nil {
 				parent = parentServers[conns[n].server]
 			}
-//TODO			C.tellUI(C.mAddChannel, strToArg(cc.name), C.TRUE, n, parent)
+_=parent//TODO			C.tellUI(C.mAddChannel, strToArg(cc.name), C.TRUE, n, parent)
 			if conns[n].channel == nil {
 				parentServers[conns[n].server] = <-channelAdded
 			} else {
