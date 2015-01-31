@@ -21,6 +21,13 @@ var channelAdded = make(chan struct{})
 
 var parentServers = make(map[iface.Server]C.gint64)
 
+type sendMessageParams struct {
+	message		string
+	id			C.gint64
+}
+
+var sendMessage = make(chan *sendMessageParams)
+
 func doChannels() {
 	for {
 		select {
@@ -36,6 +43,9 @@ func doChannels() {
 			C.tellUI(C.mAddChannel, strToArg(cc.name), C.TRUE, n, parent)
 			<-channelAdded
 			// TODO start monitoring
+		case m := <-sendMessage:
+			// TODO
+			_ = m
 		}
 	}
 }

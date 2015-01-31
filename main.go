@@ -24,6 +24,7 @@ func main() {
 	startC()
 	C.tellUI(C.mLoadMainWindow, nil, C.FALSE, 0, 0)
 	<-mainWindowLoaded
+	go doChannels()
 	openServer(sTest, "", 0, false)
 	<-quit
 	println("exiting")

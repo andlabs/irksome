@@ -33,10 +33,6 @@ func openServer(ty int, addr string, port int, tls bool) {
 	go listen(s)
 }
 
-func sendMessage(what string) {
-	servers[0].Raw([]byte(what))
-}
-
 func listen(s iface.Server) {
 	for m := range s.C() {
 		println(string(m.Raw()))

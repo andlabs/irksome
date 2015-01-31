@@ -32,7 +32,10 @@ func doGo(what C.int, arg C.gpointer, intarg C.gint64, intarg2 C.gint64) {
 	case C.mMainWindowLoaded:
 		mainWindowLoaded <- struct{}{}
 	case C.mSendMessage:
-		sendMessage(C.GoString(C.argToString(arg)))
+		sendMessage <- &sendMessageParams{
+			message:		C.GoString(C.argToString(arg)),
+			id:			intarg,
+		}
 	case C.mChannelAdded:
 		channelAdded <- struct{}{}
 	}

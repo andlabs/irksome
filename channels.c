@@ -1,7 +1,7 @@
 // 30 january 2015
 #include "irksome.h"
 
-GtkTreeStore *channels;
+static GtkTreeStore *channels;
 
 enum {
 	colName,
@@ -98,4 +98,16 @@ void addChannel(char *name, gint64 goID, gint64 parentID)
 		colGoID, goID,
 		-1);
 	tellGo(mChannelAdded, NULL, FALSE, 0, 0);
+}
+
+gint64 selectedChannelGoID(GtkTreeSelection *sel)
+{
+	GtkTreeModel *model;
+	GtkTreeIter iter;
+	gint64 goID;
+
+	if (gtk_tree_selection_get_selected(sel, &model, &iter) == FALSE)
+		return -1;
+	gtk_tree_model_get(model, &iter, colGoID, &goID, -1);
+	return goID;
 }

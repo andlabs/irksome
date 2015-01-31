@@ -96,10 +96,9 @@ extern GtkTextTagTable *tagtable;
 extern void initTextTags(void);
 
 // channels.c
-// TODO should this be exported?
-extern GtkTreeStore *channels;
 extern void initChannels(void);
 extern void setupChannelList(GtkTreeView *);
 extern void addChannel(char *, gint64, gint64);
+extern gint64 selectedChannelGoID(GtkTreeSelection *);
 
 #endif

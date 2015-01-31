@@ -10,9 +10,11 @@ static MainWindow *mainwin;
 static void enterLine(GtkEntry *entry, gpointer data)
 {
 	const char *text;
+	gint64 goID;
 
 	text = gtk_entry_get_text(entry);
-	tellGo(mSendMessage, g_strdup(text), TRUE, 0, 0);
+	goID = selectedChannelGoID(mainwin->selectedChannel);
+	tellGo(mSendMessage, g_strdup(text), TRUE, goID, 0);
 	gtk_entry_set_text(entry, "");
 }
 
