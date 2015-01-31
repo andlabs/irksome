@@ -1,5 +1,1 @@
-UI
-- investigate GtkTextArea 'accepts tab' and see if that's what we want for the chat view
-- see how to ellipsize the channel list
-- get the exact sizes we want for the halves of the main area
-- ellipsize status label
+should C.tellUI() always be run from the interop goroutine?
