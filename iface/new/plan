@@ -19,3 +19,48 @@ The GUI runs entirely isolated from Go; a communication system is used. A single
 There is no O(1) lookup by field; this won't be an issue. The channel list is a tree; channels and queries are children of the server tab.
 
 In addition to server connects and disconnects, leaving and being kicked from a channel also has to be tracked properly.
+
+IDEA
+Stop representing Channels as objects.
+
+	type Conn interface {
+		C() <-chan Message
+		Connect()
+		Disconnect()
+		Join(...)
+		Part(...)			// Leave()?
+		Query(...)
+		Send(chan string, ...)
+		// etc.
+	}
+	type Message interface {
+		Channel() (chan string, current bool)
+			// chan == "", current == false means server
+			// chan == "", current == true means current channel
+			// chan != "", current == true is invalid
+		// etc.
+	}
+
+The Conn instance will be responsible for managing reconnections. Reconnections will happen if and only if an explicit call to Disconnect() was not issued (of course, this gets reset once a call to Connect() is made).
+
+Whenever a targeted message comes in, the channel name will be sent to the GUI thread, which will look for a matching tab. Yes, this now means string comparisons, but it /still/ shouldn't be too much. If no matching tab exists, it will create one. Because any legitimate channel joins need to be initiated with a Joined Message, we can deduce the proper tab color.
+
+Conn MIGHT have another method
+		IsQuery(channel string) bool
+that will return whether the named channel is a real channel or a query, also aiding tab color selection. As always, the empty string represents the server.
+
+When a message has to be sent, the GUI thread can alert Go easily.
+
+All the Go code reduces to
+
+	list of Go IDs for each Conn instance
+	go func() {
+		for c := range sendMessage {
+			conns[c.ID].DoWhatever(c...)
+		}
+	}()
+	go func(c Conn) {
+		for m := range c.C() {
+			// tell GUI thread to display this message
+		}
+	}()
