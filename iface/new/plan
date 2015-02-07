@@ -1,0 +1,21 @@
+WHAT IS NEEDED
+A way to handle connections to IRC and IRC-like networks like Slack. Each protocol should conform to the same interface. The interface provides functions for common tasks, like joining a channel and sending a message, as well as translation functions for the various formatting styles offered by each protocol.
+
+Something must be able to gracefully handle connection disconnects and reconnects transparently from the GUI. Whether it is this or the overall program isn't important, but it is there.
+
+On the GUI end, we must be able to have a separate tab for each server, channel, and private message session ("query"). Messages have to be shown in the right tab, and tabs can be colored to represent missed activity and highlights. Some messages from the server should be shown in the current tab (TODO what if the current tab is in a different server?). In addition, messages typed in the UI must appear in the current tab in the end. Tabs can be reordered arbitrarily.
+
+(Yes, the server can send its own messages that should appear in a dedicated tab.)
+
+NOTES
+The GUI runs entirely isolated from Go; a communication system is used. A single tab has this information attached to it, with implementation details and view-related fields removed:
+
+	GType tabData[] = {
+		typeof string,		// name
+		typeof color,		// text color representing activity/highlights
+		typeof someID,		// an ID that uniquely identifies the server AND channel/query/etc. tthat the tab represents
+	}
+
+There is no O(1) lookup by field; this won't be an issue. The channel list is a tree; channels and queries are children of the server tab.
+
+In addition to server connects and disconnects, leaving and being kicked from a channel also has to be tracked properly.
