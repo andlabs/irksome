@@ -64,3 +64,10 @@ All the Go code reduces to
 			// tell GUI thread to display this message
 		}
 	}()
+
+PING REPLIES
+Assuming we can read a net.Conn/tls.Conn this way, a new Message type will be issued for ping timeouts. This should be handled specially by changing the statusbar.
+
+When the statusbar changes, a timer starts counting down from 5 seconds, at which point it will be reverted. This timer is reset if another message is sent.
+
+TODO figure out how to clear the message when a ping reply comes in
